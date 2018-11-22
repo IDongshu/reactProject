@@ -16,10 +16,13 @@ import Makemoney from './pages/Makemoney/Makemoney.js';
 import Lendmoney from './pages/Lendmoney/Lendmoney.js';
 import Savemoney from './pages/Savemoney/Savemoney.js';
 import Member from './pages/Member/Member.js';
+import ConfrimId from './pages/ConfrimId/ConfrimId.js';
 
 
 
 import $ from 'jquery';
+
+
 //创建仓库
 const store = createStore(function(state={
     tab:0,
@@ -79,6 +82,8 @@ ReactDOM.render(
                 <Route path="/lendmoney/" component={Lendmoney} />
                 <Route path="/savemoney/" component={Savemoney} />
                 <Route path="/member/" component={Member} />
+                <Route path="/confrimid/" component={ConfrimId} />
+
 
             </div>
         </Router>
