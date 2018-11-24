@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import './Savemoney.scss';
 import { Carousel } from 'antd';
 
+import Cookie from "../../libs/cookie.js";
+
 class Savemoney extends Component {
     constructor(props){
       super(props);
@@ -13,6 +15,7 @@ class Savemoney extends Component {
             isShowSmallCart:false,
             isShowMyLayer:false,
             showQuan:"",
+            isAnimate:false,
             qiandao:[{
                 title:"任务",
                 num:0,
@@ -61,7 +64,6 @@ class Savemoney extends Component {
         }
     }
 
-
     showSmallCart(){
         this.setState({
             isShowSmallCart: !this.state.isShowSmallCart
@@ -69,12 +71,10 @@ class Savemoney extends Component {
     }
 
 
-    /*获取优惠券*/
+    /*点击优惠券*/
     getQuan(item){
         this.setState({
-            isShowMyLayer:true
-        })
-        this.setState({
+            isShowMyLayer:true,
             showQuan:item.src
         })
         
@@ -90,11 +90,49 @@ class Savemoney extends Component {
     
     /*真正获取优惠券*/
     realGetQuan(){
-        this.setState({
-            isShowMyLayer:false
-        })
+        
+        let cookies=Cookie.getCookie("yonghuming")||[];
+        let len = cookies.length;
+
+        if(len == 0){
+            this.props.history.push('/uploadpic/');
+            console.log("修改路由,变成跳转登录");
+        }else{
+            /*发送ajax,将优惠券金额插入数据库*/
+
+            /* $.ajax({
+                type:"POST",
+                url:"",
+                data:{
+                    yonghuming:cookies,
+                    num:99
+                }
+                success:function(response){
+                    // 插入数据库返回的信息
+                }
+            })*/
+            
+
+            this.setState({
+                isAnimate:true,
+                getQuanNum:this.state.getQuanNum+1
+            })
+
+            let timer=setInterval(()=>{
+                this.setState({
+                    isAnimate:false,
+                    isShowMyLayer:false
+                })
+                clearInterval(timer);
+            },1000)
+        }      
     }
 
+
+    /*返回上一页*/
+    goBack(){
+       this.props.history.goBack();
+    }
 
     render() {
         return (
@@ -102,9 +140,9 @@ class Savemoney extends Component {
                 <div id="m_common_header">
                     <header className="jd-header">
                         <div className="jd-header-new-bar">
-                            <div report-eventid="MCommonHead_Back" report-eventparam="https://active.jd.com/forever/saveMoney/1.0.0/#/indexPage" id="m_common_header_goback" className="jd-header-icon-back J_ping"><span></span></div>
+                            <div onClick={this.goBack.bind(this)} id="m_common_header_goback" className="jd-header-icon-back J_ping"><span></span></div>
                             <div className="jd-header-new-title">省钱</div>
-                            <div report-eventid="MCommonHead_NavigateButton" report-eventparam="https://active.jd.com/forever/saveMoney/1.0.0/#/indexPage" id="m_common_header_jdkey" className="jd-header-icon-new-shortcut J_ping"><span onClick={this.showSmallCart.bind(this)}></span></div>
+                            <div  id="m_common_header_jdkey" className="jd-header-icon-new-shortcut J_ping"><span onClick={this.showSmallCart.bind(this)}></span></div>
                         </div>
                     </header>
                 </div>
@@ -187,18 +225,18 @@ class Savemoney extends Component {
                                 </div>
                                 <div className=" row whole-banner ">
                                     <div className=" img-wrap bg-none min-height-0">
-                                        <img src="https://img12.360buyimg.com/jrpmobile/jfs/t20125/139/377044579/41214/51a08cb6/5b0b947bN916e62ee.jpg?width=1500&amp;height=442" className="test-lazyload" alt="" jrmsc="on" data-qyy-click="" clstag="pageclick|keycount|Qing_1209_4859|7768_33930|null" data-qyy-cardpageinfos="" data-qyy-ejumptype="1" data-qyy-jumpt="https://home.jdpay.com/my/woolParty?from=sqbanner&amp;sid=" />
+                                        <img src="https://img12.360buyimg.com/jrpmobile/jfs/t20125/139/377044579/41214/51a08cb6/5b0b947bN916e62ee.jpg?width=1500&amp;height=442" className="test-lazyload" alt=""  />
                                     </div>
                                 </div>
                                 <div className="row row-197 threeImg ">
                                     <div className="item-wrap">
-                                        <div className="item" jrmsc="on" data-qyy-click="" clstag="pageclick|keycount|Qing_1209_4859|7837_34097|null" data-qyy-cardpageinfos="" data-qyy-ejumptype="1" data-qyy-jumpt="https://home.jdpay.com/my/couponmall/shop/index?from=sqbanner" style={{background:""}}><img className="item-img" src="https://img12.360buyimg.com/jrpmobile/jfs/t28342/281/144513453/24267/4b82f4f3/5be91415Nbbb51d03.png?width=335&amp;height=420" alt="" /></div>
+                                        <div className="item"  style={{background:""}}><img className="item-img" src="https://img12.360buyimg.com/jrpmobile/jfs/t28342/281/144513453/24267/4b82f4f3/5be91415Nbbb51d03.png?width=335&amp;height=420" alt="" /></div>
                                     </div>
                                     <div className="item-wrap">
-                                        <div className="item" jrmsc="on" data-qyy-click="" clstag="pageclick|keycount|Qing_1209_4859|7837_34098|null" data-qyy-cardpageinfos="" data-qyy-ejumptype="1" data-qyy-jumpt="https://m.jr.jd.com/zc/drawSystem/hb/index.html?contentParam=100001079&amp;act=1&amp;actCode=03D00D911E&amp;actType=1" style={{background:""}}><img className="item-img" src="https://img12.360buyimg.com/jrpmobile/jfs/t27631/208/1513930801/9151/55693fb9/5be4fb0bN15c07ec1.png?width=335&amp;height=210" alt="" /></div>
+                                        <div className="item"  style={{background:""}}><img className="item-img" src="https://img12.360buyimg.com/jrpmobile/jfs/t27631/208/1513930801/9151/55693fb9/5be4fb0bN15c07ec1.png?width=335&amp;height=210" alt="" /></div>
                                     </div>
                                     <div className="item-wrap">
-                                        <div className="item" jrmsc="on" data-qyy-click="" clstag="pageclick|keycount|Qing_1209_4859|7837_34099|null" data-qyy-cardpageinfos="" data-qyy-ejumptype="1" data-qyy-jumpt="https://pro.m.jd.com/mall/active/98iv4M2xGRbaXGXp1zHg9u74yRm/index.html" style={{background:""}}><img className="item-img" src="https://img12.360buyimg.com/jrpmobile/jfs/t24757/94/2422816066/11630/c31c4bfb/5be4f719N75983e83.png?width=335&amp;height=210" alt="" /></div>
+                                        <div className="item"  style={{background:""}}><img className="item-img" src="https://img12.360buyimg.com/jrpmobile/jfs/t24757/94/2422816066/11630/c31c4bfb/5be4f719N75983e83.png?width=335&amp;height=210" alt="" /></div>
                                     </div>
                                 </div>
                             </div>
@@ -276,11 +314,15 @@ class Savemoney extends Component {
                 </div>
 
                 <div className="mylayer"  style={{transformOrigin:"0px 0px 0px", opacity:"1", transform:"scale(1, 1)", display:this.state.isShowMyLayer? 'block':'none'}}>
-                    <div className="mylayerBox1" onClick={this.realGetQuan.bind(this)}>
-                        <img src={this.state.showQuan} />
+                    <div className="mylayerAll" style={{WebkitAnimation:this.state.isAnimate? 'myfirst 1s':''}}>
+                        <div className="mylayerBox1" onClick={this.realGetQuan.bind(this)}>
+                            <img src={this.state.showQuan} />
+                        </div>
+                        <div className="mylayerBox2" >
+                            <img src="https://mjr.jd.com/spe/smrz/img/clear.png"  onClick={this.calcelQuan.bind(this)}/>
+                        </div>
                     </div>
-                    <div className="mylayerBox2">
-                        <img src="https://mjr.jd.com/spe/smrz/img/clear.png"  onClick={this.calcelQuan.bind(this)}/>
+                    <div className="tips" >☺恭喜你,领取成功!
                     </div>
                 </div>
 
